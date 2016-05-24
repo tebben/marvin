@@ -1,0 +1,31 @@
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <script>
+
+  var serversocket = new WebSocket("ws://localhost:8080/action");
+
+  serversocket.onopen = function() {
+    alert("connected");
+  }
+
+  // Write message on receive
+  serversocket.onmessage = function(e) {
+    console.log("socket message: " + e.data);
+  };
+
+  function senddata() {
+     var data = document.getElementById('sendtext').value;
+     serversocket.send(data);
+  }
+
+</script>
+
+</head>
+<input id="sendtext" type="text" >
+<input type="button" id="sendBtn" value="send" onclick="senddata()">
+
+<div id='comms'></div>
+
+</body>
+</html>
