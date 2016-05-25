@@ -2,7 +2,7 @@ package events
 
 import (
 	"errors"
-	"github.com/tebben/marvin/go/models"
+	"github.com/tebben/marvin/go/marvin/models"
 	"log"
 	"runtime"
 )

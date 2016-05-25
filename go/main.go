@@ -1,23 +1,24 @@
 package main
 
 import (
-	"github.com/tebben/marvin/go/marvin"
-	"github.com/tebben/marvin/go/modules"
-	//"github.com/tebben/marvin/go/serial"
-	"golang.org/x/net/websocket"
-	"net/http"
-	"github.com/tebben/marvin/go/models"
-	"log"
+	"github.com/tebben/marvin/go/marvin/system"
+	"github.com/tebben/marvin/go/marvin/modules"
+	"github.com/tebben/marvin/go/marvin/modules/hue"
+	"github.com/tebben/marvin/go/http"
+	"github.com/tebben/marvin/go/marvin/models"
 )
 
-var Marvin marvin.Marvin
+var marvin models.Marvin
 
 func main() {
-	//Setup marvin
-	Marvin = marvin.Marvin{}
-	Marvin.AddModule(&modules.HueModule{})
-	Marvin.AddModule(&modules.PrintModule{})
-	Marvin.Start()
+	marvin = system.CreateMarvin()
+	marvin.AddModule(&huemodule.HueModule{})
+	marvin.AddModule(&modules.PrintModule{})
+	marvin.Start()
+
+	marvinServer := http.CreateServer(&marvin, "localhost", 8080, marvin.GetEndpoints())
+	marvinServer.Start()
+}
 
 /*
 	c := &serial.Config{Name: "COM3", Baud: 115200}
@@ -38,24 +39,3 @@ func main() {
 	}
 	log.Printf("%q", buf[:n])
 */
-
-	http.Handle("/action", websocket.Handler(actionSocketHandler))
-	http.Handle("/", http.FileServer(http.Dir("./client")))
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		panic("ListenAndServe: " + err.Error())
-	}
-}
-
-func actionSocketHandler(ws *websocket.Conn) {
-	var oMsg models.ActionMessage
-
-	for {
-		if err := websocket.JSON.Receive(ws, &oMsg); err != nil{
-			log.Printf("Error receiving socket message: %v", err)
-			break
-		}
-
-		Marvin.Trigger(oMsg.Action, oMsg.Payload)
-	}
-}

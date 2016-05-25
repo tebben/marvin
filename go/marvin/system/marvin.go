@@ -1,12 +1,20 @@
-package marvin
+package system
 
 import (
 	"github.com/tebben/marvin/go/events"
-	"github.com/tebben/marvin/go/models"
+	"github.com/tebben/marvin/go/marvin/models"
+	"github.com/tebben/marvin/go/marvin/rest"
 )
 
 type Marvin struct {
 	modules []models.MarvinModule
+	restEndpoints []models.Endpoint
+}
+
+// NewAPI Initialise a new SensorThings API
+func CreateMarvin() models.Marvin {
+	return &Marvin{
+	}
 }
 
 // AddModule add a new module to Marvin
@@ -19,6 +27,11 @@ func (m *Marvin) GetModules() []models.MarvinModule {
 	return m.modules
 }
 
+// GetEndpoints retrieves all REST endpoints defined for Marvin
+func (m *Marvin) GetEndpoints() []models.Endpoint {
+	return m.restEndpoints
+}
+
 // Start Marvin, Start setups the modules and registers all module actions
 func (m *Marvin) Start() {
 	for _, module := range m.GetModules() {
@@ -29,10 +42,11 @@ func (m *Marvin) Start() {
 		}
 
 		for _, action := range actions {
-
 			events.On(action)
 		}
 	}
+
+	m.restEndpoints = rest.CreateEndPoints()
 }
 
 func (m *Marvin) Trigger(actionName string, msg map[string]interface{}) {

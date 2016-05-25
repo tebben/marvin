@@ -1,7 +1,7 @@
 package events
 
 import (
-	"github.com/tebben/marvin/go/models"
+	"github.com/tebben/marvin/go/marvin/models"
 )
 
 func On(action models.MarvinAction) error {
