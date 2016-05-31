@@ -4,9 +4,8 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/tebben/marvin/go/marvin/models"
 	"log"
-	"net/http"
+	netHTTP "net/http"
 	"strconv"
-	"golang.org/x/net/websocket"
 )
 
 // MarvinServer is the type that contains all of the relevant information to set
@@ -30,15 +29,25 @@ func CreateServer(marvin *models.Marvin, host string, port int, endpoints []mode
 
 // Start command to start the GOST HTTPServer
 func (ms *MarvinServer) Start() {
+	go startWebsockets()
+
 	log.Printf("Started Marvin HTTP Server on %v:%v", ms.host, ms.port)
 	router := createRouter(ms)
-	http.Handle("/action", websocket.Handler(actionSocketHandler))
-	http.Handle("/", http.FileServer(http.Dir("../client")))
-	httpError := http.ListenAndServe(ms.host+":"+strconv.Itoa(ms.port), router)
+	httpError := netHTTP.ListenAndServe(ms.host+":"+strconv.Itoa(ms.port), router)
 
 	if httpError != nil {
 		log.Fatal(httpError)
 		return
+	}
+}
+
+func startWebsockets(){
+	go hub.run()
+	netHTTP.HandleFunc("/ws", serveWs)
+
+	err := netHTTP.ListenAndServe(":9000", nil)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
 	}
 }
 
@@ -59,15 +68,17 @@ func createRouter(ms *MarvinServer) *httprouter.Router {
 
 			switch operation.OperationType {
 				case models.HTTPOperationGet : {
-					router.GET(operation.Path, func(w http.ResponseWriter, r *http.Request, p httprouter.Params) { operation.Handler(w, r, ms.marvin)})
+					router.GET(operation.Path, func(w netHTTP.ResponseWriter, r *netHTTP.Request, p httprouter.Params) { operation.Handler(w, r, ms.marvin)})
 				}
 			}
 		}
 	}
 
+	router.ServeFiles("/app/*filepath", netHTTP.Dir("client/app"))
 	return router
 }
 
+/*
 func actionSocketHandler(ws *websocket.Conn) {
 	var oMsg models.ActionMessage
 
@@ -79,4 +90,4 @@ func actionSocketHandler(ws *websocket.Conn) {
 		log.Printf("Error receiving socket message: %v", oMsg.Action)
 		//system.Marvin.Trigger(oMsg.Action, oMsg.Payload)
 	}
-}
+}*/

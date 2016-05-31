@@ -18,6 +18,7 @@ func (mm *HueModule) Setup() {
 	mm.Actions = []models.MarvinAction{
 		CreateHueAllOff(mm),
 		CreateHueAllOn(mm),
+		CreateHueSetState(mm),
 	}
 
 	mm.hueBridge = hue.NewBridge("192.168.178.19", "6cfd742666978686a932f7824339135")

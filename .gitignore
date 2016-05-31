@@ -33,3 +33,10 @@ _cgo_export.*
 # Results
 *.test
 *.prof
+
+# Client
+node_modules
+dist
+bower_components
+.tmp
+.publish/

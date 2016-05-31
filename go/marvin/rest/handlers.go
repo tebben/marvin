@@ -16,6 +16,7 @@ func HandleGetModules(w http.ResponseWriter, r *http.Request, m *models.Marvin) 
 
 // handleGetRequest is the default function to handle incoming GET requests
 func handleGetRequest(w http.ResponseWriter, r *http.Request, h *func() (interface{})) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	// Run the handler func such as Api.GetThingById
 	handler := *h
 	data := handler()

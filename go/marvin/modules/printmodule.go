@@ -25,6 +25,10 @@ func CreatePrintAction() models.MarvinAction{
 	a.Name = "Default Print"
 	a.Description = "Print a message to the log"
 
+	payload := make(map[string]interface{})
+	payload["msg"] = "Hello World"
+	a.Sample = models.ActionMessage{Action: a.ActionName, Payload: payload}
+
 	return a
 }
 

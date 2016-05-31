@@ -8,9 +8,10 @@ type MarvinAction interface {
 }
 
 type Action struct {
-	ActionName string `json:"actionName"`
-	Name string `json:"name"`
+	Name        string `json:"name"`
+	ActionName  string `json:"actionName"`
 	Description string `json:"description"`
+	Sample	    ActionMessage `json:"sample,omitempty"`
 }
 
 func (a *Action) GetActionName() string {

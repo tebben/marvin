@@ -1,0 +1,152 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input-container.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input-behavior.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../styles/shared-styles.html">
+
+<dom-module id="module-page">
+    <template>
+        <style include="shared-styles">
+            :host {
+                    display: block;
+                    
+                    .self-end {
+                        @apply(--layout-self-end);
+                    }
+                    
+                    --paper-tabs-selection-bar-color:{ var(--paper-red-200)};
+                    --paper-tabs-selection-bar: {
+                       height: 4px;
+                    }
+                    
+                    --paper-tabs: {
+                        color: #FFF;
+                        font-size: 13px;
+                        background-color: var(--paper-red-800);
+                    }
+                }
+                
+                #content{
+                    padding: 25px 30px;
+                }
+                
+                paper-material{
+                    padding: 25px 25px;
+                    margin-top: 25px;
+                }
+                
+                .moduleInfoHeader {
+                    font-size: 14px;
+                    letter-spacing: 1px;
+                    font-weight: bold;
+                    color: #000000; 
+                }
+                
+                .collapse-content {
+                    padding: 15px;
+                    border: 1px solid #dedede;
+                }
+                
+        </style>
+        <div>
+            <paper-tabs id="moduleTabs" selected="0" class="bottom self-end">
+                <paper-tab>INFO</paper-tab>
+                <paper-tab>ACTIONS</paper-tab>
+                <paper-tab>EVENTS</paper-tab>
+                <paper-tab>SETTINGS</paper-tab>
+            </paper-tabs>
+            <div id="content">               
+                <neon-animated-pages id="modulePages" class="flex" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+                    <neon-animatable>
+                        <paper-material elevation="1">
+                            <span class="moduleInfoHeader">MODULE NAME</span>
+                            <pre>{{selectedModule.name}}</pre>
+                            <span class="moduleInfoHeader">DESCRIPTION</span>
+                            <pre>{{selectedModule.description}}</pre>
+                        </paper-material>
+                    </neon-animatable>
+                    <neon-animatable>
+                         
+                    <template is="dom-repeat" items={{selectedModule.actions}} as="action">
+                        <paper-material elevation="1">
+                            <h1>{{action.name}}</h1>
+                            <span class="moduleInfoHeader">ACTION NAME</span>
+                            <pre>{{action.actionName}}</pre>
+                            <span class="moduleInfoHeader">DESCRIPTION</span>
+                            <pre>{{action.description}}</pre>
+                            <paper-textarea label="sample action" value="{{action.sample}}" id="{{action.actionName}}"></paper-textarea>
+                            <paper-button raised on-click="clickAction">FIRE</paper-button>
+                        </paper-material>
+                    </template>
+    </neon-animatable>
+    <neon-animatable>
+        <paper-material elevation="1">
+            <h1 class="page-title" tabindex="-1">DRIE</h1>
+            <div>blablabla</div>
+        </paper-material>
+    </neon-animatable>
+    <neon-animatable>
+        <paper-material elevation="1">
+            <h1 class="page-title" tabindex="-1">DRIE</h1>
+            <div>blablabla</div>
+        </paper-material>
+    </neon-animatable>
+    </neon-animated-pages>
+    </div>
+    </div>
+    </template>
+    <script>
+        (function() {
+            Polymer({
+                is: 'module-page',
+                properties: {
+                    module: {
+                        type: String,
+                        notify: true,
+                        observer: '_selectedModuleChanged'
+                    },
+                    selectedModule: {
+                        type: Object,
+                        notify: true,
+                    }
+                },
+                ready: function() {
+                    var pages = this.$.modulePages;
+                    var tabs = this.$.moduleTabs;
+
+                    this.addEventListener('template-bound', function(e) {
+                        e.target.clickAction = clickAction;
+                    });
+
+                    tabs.addEventListener('iron-select', function() {
+                        if (tabs.selected < pages.selected) {
+                            pages.entryAnimation = 'slide-from-left-animation';
+                            pages.exitAnimation = 'slide-right-animation';
+                        } else {
+                            pages.entryAnimation = 'slide-from-right-animation';
+                            pages.exitAnimation = 'slide-left-animation';
+                        }
+
+                        pages.selected = tabs.selected;
+                    });
+                },
+                clickAction: function(e, a) {
+                    var textding = this.$$('#' + e.model.action.actionName);
+                    fireAction(textding.value);
+                },
+                _selectedModuleChanged: function(newVal, oldVal) {
+                    this.selectedModule = getModuleByName(newVal);
+                },
+            });
+        })();
+    </script>
+</dom-module>

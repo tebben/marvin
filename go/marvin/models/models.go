@@ -8,12 +8,11 @@ type Marvin interface {
 	GetModules() []MarvinModule
 	GetEndpoints() []Endpoint
 	Start()
-	Trigger(actionName string, msg map[string]interface{})
 }
 
 type ActionMessage struct {
 	Action  string                 `json:"action"`
-	Payload map[string]interface{} `json:"payload"`
+	Payload map[string]interface{} `json:"payload,omitempty"`
 }
 
 // Server interface for starting and stopping the HTTP server

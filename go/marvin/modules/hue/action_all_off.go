@@ -1,7 +1,6 @@
 package huemodule
 
 import (
-	"log"
 	"github.com/tebben/marvin/go/marvin/models"
 )
 
@@ -12,16 +11,16 @@ type ActionHueAllOff struct {
 
 func CreateHueAllOff(module *HueModule) models.MarvinAction{
 	a := &ActionHueAllOff{}
-	a.ActionName =  "allOff"
+	a.module = module
+	a.ActionName =  "hueAllOff"
 	a.Name = "All lights off"
 	a.Description = "Turn off all your Hue lights"
-
+	a.Sample = models.ActionMessage{ Action: a.ActionName }
 	return a
 }
 
-func (ma *ActionHueAllOff) Execute(msg map[string]interface{}) {
-	log.Println("TURNING HUE LIGHTS OFF")
-	for _, light := range ma.module.hueLights {
+func (aao *ActionHueAllOff) Execute(msg map[string]interface{}) {
+	for _, light := range aao.module.hueLights {
 		light.Off()
 	}
 }

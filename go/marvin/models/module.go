@@ -9,11 +9,11 @@ type MarvinModule interface {
 	Setup()
 }
 
-type Module struct{
-	Name string `json:"name"`
-	Description string `json:"description"`
-	Events []MarvinEvent `json:"events"`
-	Actions []MarvinAction `json:"actions"`
+type Module struct {
+	Name        string         `json:"name"`
+	Description string         `json:"description"`
+	Events      []MarvinEvent  `json:"events"`
+	Actions     []MarvinAction `json:"actions"`
 }
 
 func (mm *Module) GetName() string {

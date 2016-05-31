@@ -48,7 +48,3 @@ func (m *Marvin) Start() {
 
 	m.restEndpoints = rest.CreateEndPoints()
 }
-
-func (m *Marvin) Trigger(actionName string, msg map[string]interface{}) {
-	events.Fire(actionName, msg)
-}
