@@ -5,7 +5,6 @@ import (
 	"errors"
 	"github.com/tebben/marvin/go/marvin/models"
 	"log"
-	"runtime"
 )
 
 type EventType interface {
@@ -16,7 +15,6 @@ var functionMap map[string]models.MarvinAction
 
 func init() {
 	functionMap = make(map[string]models.MarvinAction)
-	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
 func add(action models.MarvinAction) error {

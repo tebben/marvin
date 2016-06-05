@@ -80,17 +80,3 @@ func createRouter(ms *MarvinServer) *httprouter.Router {
 	router.ServeFiles("/app/*filepath", netHTTP.Dir("client/app"))
 	return router
 }
-
-/*
-func actionSocketHandler(ws *websocket.Conn) {
-	var oMsg models.ActionMessage
-
-	for {
-		if err := websocket.JSON.Receive(ws, &oMsg); err != nil {
-			log.Printf("Error receiving socket message: %v", err)
-			break
-		}
-		log.Printf("Error receiving socket message: %v", oMsg.Action)
-		//system.Marvin.Trigger(oMsg.Action, oMsg.Payload)
-	}
-}*/

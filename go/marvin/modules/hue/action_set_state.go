@@ -31,18 +31,8 @@ func CreateHueSetState(module *HueModule) models.MarvinAction {
 
 	states := stateMessage{
 		States: []lightState{
-			lightState{
-				Id:  "1",
-				Hue: "50000",
-				Bri: "254",
-				Sat: "254",
-			},
-			lightState{
-				Id:  "2",
-				Hue: "80000",
-				Bri: "254",
-				Sat: "254",
-			},
+			lightState{Id: "1", Hue: "50000", Bri: "254", Sat: "254"},
+			lightState{Id: "2", Hue: "80000", Bri: "254", Sat: "254"},
 		},
 	}
 

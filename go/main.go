@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/tebben/marvin/go/marvin/system"
-	"github.com/tebben/marvin/go/marvin/modules"
-	"github.com/tebben/marvin/go/marvin/modules/hue"
 	"github.com/tebben/marvin/go/http"
 	"github.com/tebben/marvin/go/marvin/models"
+	"github.com/tebben/marvin/go/marvin/modules"
+	"github.com/tebben/marvin/go/marvin/modules/hue"
+	"github.com/tebben/marvin/go/marvin/system"
 )
 
 var marvin models.Marvin
@@ -13,7 +13,7 @@ var marvin models.Marvin
 func main() {
 	marvin = system.CreateMarvin()
 	marvin.AddModule(&huemodule.HueModule{})
-	marvin.AddModule(&modules.PrintModule{})
+	marvin.AddModule(&modules.LogModule{})
 	marvin.Start()
 
 	marvinServer := http.CreateServer(&marvin, "localhost", 8080, marvin.GetEndpoints())
