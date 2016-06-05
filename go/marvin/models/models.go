@@ -1,6 +1,8 @@
 package models
 
-import ( "net/http"
+import (
+	"encoding/json"
+	"net/http"
 )
 
 type Marvin interface {
@@ -11,8 +13,14 @@ type Marvin interface {
 }
 
 type ActionMessage struct {
-	Action  string                 `json:"action"`
-	Payload map[string]interface{} `json:"payload,omitempty"`
+	Action  string           `json:"action"`
+	Payload *json.RawMessage `json:"payload,omitempty"`
+}
+
+func ToRawJson(i interface{}) *json.RawMessage {
+	p, _ := json.Marshal(i)
+	raw := json.RawMessage(p)
+	return &raw
 }
 
 // Server interface for starting and stopping the HTTP server

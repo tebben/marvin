@@ -1,6 +1,7 @@
 package events
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/tebben/marvin/go/marvin/models"
 	"log"
@@ -26,7 +27,7 @@ func add(action models.MarvinAction) error {
 	return nil
 }
 
-func invoke(actionName string, msg map[string]interface{}) {
+func invoke(actionName string, msg *json.RawMessage) {
 	if _, ok := functionMap[actionName]; ok {
 		functionMap[actionName].Execute(msg)
 		return

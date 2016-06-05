@@ -1,10 +1,10 @@
 package http
 
 import (
-	"log"
-	"github.com/tebben/marvin/go/marvin/models"
 	"encoding/json"
 	"github.com/tebben/marvin/go/events"
+	"github.com/tebben/marvin/go/marvin/models"
+	"log"
 )
 
 // hub maintains the set of active connections and broadcasts messages to the
@@ -43,21 +43,21 @@ func (h *Hub) run() {
 		case message := <-h.broadcast:
 			var oMsg models.ActionMessage
 			err := json.Unmarshal(message, &oMsg)
-			if(err != nil){
+			if err != nil {
 				log.Printf("Error unmarshalling fired event: %s", string(message[:]))
-			}else{
+			} else {
 				events.Fire(oMsg.Action, oMsg.Payload)
 			}
 
-		/*
-			for conn := range h.connections {
-				select {
-				case conn.send <- message:
-				default:
-					close(conn.send)
-					delete(hub.connections, conn)
+			/*
+				for conn := range h.connections {
+					select {
+					case conn.send <- message:
+					default:
+						close(conn.send)
+						delete(hub.connections, conn)
+					}
 				}
-			}
 			*/
 		}
 	}

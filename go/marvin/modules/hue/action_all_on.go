@@ -1,6 +1,7 @@
 package huemodule
 
 import (
+	"encoding/json"
 	"github.com/tebben/marvin/go/marvin/models"
 )
 
@@ -9,19 +10,18 @@ type ActionHueAllOn struct {
 	module *HueModule
 }
 
-func CreateHueAllOn(module *HueModule) models.MarvinAction{
+func CreateHueAllOn(module *HueModule) models.MarvinAction {
 	a := &ActionHueAllOn{}
 	a.module = module
-	a.ActionName =  "hueAllOn"
+	a.ActionName = "hueAllOn"
 	a.Name = "All lights on"
 	a.Description = "Turn on all your Hue lights"
-	a.Sample = models.ActionMessage{ Action: a.ActionName }
+	a.Sample = models.ActionMessage{Action: a.ActionName}
 	return a
 }
 
-func (ma *ActionHueAllOn) Execute(msg map[string]interface{}) {
-	for _, light := range ma.module.hueLights {
+func (a *ActionHueAllOn) Execute(msg *json.RawMessage) {
+	for _, light := range a.module.hueLights {
 		light.On()
 	}
 }
-

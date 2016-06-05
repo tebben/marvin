@@ -1,6 +1,7 @@
 package events
 
 import (
+	"encoding/json"
 	"github.com/tebben/marvin/go/marvin/models"
 )
 
@@ -8,7 +9,7 @@ func On(action models.MarvinAction) error {
 	return add(action)
 }
 
-func Fire(actionName string, msg map[string]interface{}) {
+func Fire(actionName string, msg *json.RawMessage) {
 	invoke(actionName, msg)
 }
 
