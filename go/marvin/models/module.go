@@ -5,15 +5,16 @@ type MarvinModule interface {
 	GetDescription() string
 	GetMarvinEvents() []MarvinEvent
 	GetMarvinActions() []MarvinAction
-
+	GetEndpoints() []MarvinEndpoint
 	Setup()
 }
 
 type Module struct {
-	Name        string         `json:"name"`
-	Description string         `json:"description"`
-	Events      []MarvinEvent  `json:"events"`
-	Actions     []MarvinAction `json:"actions"`
+	Name        string           `json:"name"`
+	Description string           `json:"description"`
+	Events      []MarvinEvent    `json:"events"`
+	Actions     []MarvinAction   `json:"actions"`
+	Endpoints   []MarvinEndpoint `json:"endpoints,omitempty"`
 }
 
 func (mm *Module) GetName() string {
@@ -30,4 +31,8 @@ func (mm *Module) GetMarvinEvents() []MarvinEvent {
 
 func (mm *Module) GetMarvinActions() []MarvinAction {
 	return mm.Actions
+}
+
+func (mm *Module) GetEndpoints() []MarvinEndpoint {
+	return mm.Endpoints
 }

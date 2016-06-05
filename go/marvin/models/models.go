@@ -8,7 +8,7 @@ import (
 type Marvin interface {
 	AddModule(module MarvinModule)
 	GetModules() []MarvinModule
-	GetEndpoints() []Endpoint
+	GetEndpoints() []MarvinEndpoint
 	Start()
 }
 
@@ -45,15 +45,28 @@ type HTTPHandler func(w http.ResponseWriter, r *http.Request, m *Marvin)
 
 // EndpointOperation contains the needed information to create an endpoint in the HTTP.Router
 type EndpointOperation struct {
-	OperationType HTTPOperation
-	Path          string //relative path to the endpoint for example: /v1.0/myendpoint/
-	Handler       HTTPHandler
+	OperationType HTTPOperation `json:"operation"`
+	Path          string        `json:"path"` //relative path to the endpoint for example: /v1.0/myendpoint/
+	Handler       HTTPHandler   `json:"-"`
 }
 
 // Endpoint defines the rest endpoint options
-type Endpoint interface {
+type MarvinEndpoint interface {
 	GetName() string
 	GetOperations() []EndpointOperation
+}
+
+type Endpoint struct {
+	Name       string
+	Operations []EndpointOperation
+}
+
+func (e *Endpoint) GetName() string {
+	return e.Name
+}
+
+func (e *Endpoint) GetOperations() []EndpointOperation {
+	return e.Operations
 }
 
 // ErrorResponse is the default response format for sending errors back
@@ -63,7 +76,7 @@ type ErrorResponse struct {
 
 // ErrorContent holds information on the error that occurred
 type ErrorContent struct {
-	StatusText string   `json:"status"`
-	StatusCode int      `json:"code"`
-	Messages   []string `json:"message"`
+	StatusText string `json:"status"`
+	StatusCode int    `json:"code"`
+	Message    string `json:"message"`
 }

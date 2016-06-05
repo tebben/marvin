@@ -7,8 +7,8 @@ import (
 // Endpoint contains all information for creating and handling an endpoint.
 // Endpoint can be marshalled to JSON for returning endpoint information requested by the user
 type Endpoint struct {
-	Name                  string                     `json:"name"` // Name of the endpoint
-	Operations            []models.EndpointOperation `json:"-"`
+	Name       string                     `json:"name"` // Name of the endpoint
+	Operations []models.EndpointOperation `json:"operations"`
 }
 
 // GetName returns the endpoint name

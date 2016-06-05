@@ -5,8 +5,8 @@ import (
 )
 
 // CreateEndPoints creates the pre-defined endpoint config, the config contains all endpoint info
-func CreateEndPoints() []models.Endpoint {
-	endpoints := []models.Endpoint{
+func CreateEndPoints() []models.MarvinEndpoint {
+	endpoints := []models.MarvinEndpoint{
 		createModules(),
 		//triggers, config
 	}

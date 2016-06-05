@@ -1,23 +1,23 @@
 package rest
 
 import (
-"net/http"
-	"github.com/tebben/marvin/go/marvin/models"
 	"encoding/json"
 	marvinErrors "github.com/tebben/marvin/go/errors"
+	"github.com/tebben/marvin/go/marvin/models"
+	"log"
+	"net/http"
 )
 
 // HandleGetModules retrieves all modules from Marvin
 func HandleGetModules(w http.ResponseWriter, r *http.Request, m *models.Marvin) {
-	marvin := * m
-	handle := func() (interface{}) { return marvin.GetModules() }
-	handleGetRequest(w, r, &handle)
+	marvin := *m
+	handle := func() interface{} { return marvin.GetModules() }
+	HandleGetRequest(w, r, &handle)
 }
 
 // handleGetRequest is the default function to handle incoming GET requests
-func handleGetRequest(w http.ResponseWriter, r *http.Request, h *func() (interface{})) {
+func HandleGetRequest(w http.ResponseWriter, r *http.Request, h *func() interface{}) {
 	w.Header().Add("Access-Control-Allow-Origin", "*")
-	// Run the handler func such as Api.GetThingById
 	handler := *h
 	data := handler()
 	sendJSONResponse(w, http.StatusOK, data)
@@ -30,7 +30,8 @@ func sendJSONResponse(w http.ResponseWriter, status int, data interface{}) {
 	w.WriteHeader(status)
 	b, err := json.MarshalIndent(data, "", "   ")
 	if err != nil {
-		panic(err)
+		log.Printf("%v", err.Error())
+		//panic(err)
 	}
 
 	w.Write(b)
@@ -38,18 +39,12 @@ func sendJSONResponse(w http.ResponseWriter, status int, data interface{}) {
 
 // sendError creates an ErrorResponse message and sets it to the user
 // using SendJSONResponse
-func sendError(w http.ResponseWriter, error []error) {
-	//errors cannot be marshalled, create strings
-	errors := make([]string, len(error))
-	for idx, value := range error {
-		errors[idx] = value.Error()
-	}
-
+func SendError(w http.ResponseWriter, error error) {
 	// Set te status code, default 500 for error, check if there is an ApiError an get
 	// the status code
 	var statusCode = http.StatusInternalServerError
-	if error != nil && len(error) > 0 {
-		switch e := error[0].(type) {
+	if error != nil {
+		switch e := error.(type) {
 		case marvinErrors.APIError:
 			statusCode = e.GetHTTPErrorStatusCode()
 			break
@@ -61,10 +56,9 @@ func sendError(w http.ResponseWriter, error []error) {
 		Error: models.ErrorContent{
 			StatusText: statusText,
 			StatusCode: statusCode,
-			Messages:   errors,
+			Message:    error.Error(),
 		},
 	}
 
 	sendJSONResponse(w, statusCode, errorResponse)
 }
-
