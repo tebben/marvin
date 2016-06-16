@@ -25,9 +25,13 @@ func (mm *HueModule) Setup() {
 	mm.Endpoints = mm.createEndpoints()
 	mm.hueBridge = hue.NewBridge("192.168.178.19", "6cfd742666978686a932f7824339135")
 
+	go mm.startup()
+}
+
+func (mm *HueModule) startup() {
 	lights, err := mm.hueBridge.GetAllLights()
 	if err != nil {
-		fmt.Printf("%v", err)
+		fmt.Printf("%v\n", err)
 	}
 
 	mm.hueLights = lights
@@ -60,27 +64,27 @@ func (h *HueModule) HandletGetHueLights(w http.ResponseWriter, r *http.Request, 
 	rest.HandleGetRequest(w, r, &handle)
 }
 
-func test() {
-	/*locators, _ := hue.DiscoverBridges(false)
-	locator := locators[0] // find the first locator
-	deviceType := "my nifty app"
+//func test() {
+/*locators, _ := hue.DiscoverBridges(false)
+locator := locators[0] // find the first locator
+deviceType := "my nifty app"
 
-	// remember to push the button on your hue first
-	bridge, _ := locator.CreateUser(deviceType)
-	fmt.Printf("registered new device => %+v\n", bridge)*/
+// remember to push the button on your hue first
+bridge, _ := locator.CreateUser(deviceType)
+fmt.Printf("registered new device => %+v\n", bridge)*/
 
-	/*
-		bridge := hue.NewBridge("192.168.178.19", "6cfd742666978686a932f7824339135")
-		lights, err := bridge.GetAllLights()
+/*
+	bridge := hue.NewBridge("192.168.178.19", "6cfd742666978686a932f7824339135")
+	lights, err := bridge.GetAllLights()
 
-		if(err != nil){
-			fmt.Printf("%v", err)
-		}
+	if(err != nil){
+		fmt.Printf("%v", err)
+	}
 
-		for _, light := range lights {
-			light.ColorLoop()
-		}
-	*/
-}
+	for _, light := range lights {
+		light.ColorLoop()
+	}
+*/
+//}
 
 // {"action": "print", "payload":{"msg": "BAMS!"}}

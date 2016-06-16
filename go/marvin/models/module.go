@@ -6,7 +6,10 @@ type MarvinModule interface {
 	GetMarvinEvents() []MarvinEvent
 	GetMarvinActions() []MarvinAction
 	GetEndpoints() []MarvinEndpoint
+	GetSettings() interface{}
+
 	Setup()
+	SettingsChanged(newSettings interface{})
 }
 
 type Module struct {
@@ -35,4 +38,12 @@ func (mm *Module) GetMarvinActions() []MarvinAction {
 
 func (mm *Module) GetEndpoints() []MarvinEndpoint {
 	return mm.Endpoints
+}
+
+func (mm *Module) GetSettings() interface{} {
+	return nil
+}
+
+func (mm *Module) SettingsChanged(newSettings interface{}) {
+
 }

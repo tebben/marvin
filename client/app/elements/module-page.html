@@ -1,61 +1,61 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-styles/typography.html">
-<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
-<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input-container.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input-behavior.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../styles/shared-styles.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-container.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-behavior.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../styles/shared-styles.html">
 
 <dom-module id="module-page">
     <template>
         <style include="shared-styles">
             :host {
                     display: block;
-                    
+
                     .self-end {
                         @apply(--layout-self-end);
                     }
-                    
+
                     --paper-tabs-selection-bar-color:{ var(--paper-red-200)};
                     --paper-tabs-selection-bar: {
                        height: 4px;
                     }
-                    
+
                     --paper-tabs: {
                         color: #FFF;
                         font-size: 13px;
                         background-color: var(--paper-red-800);
                     }
                 }
-                
+
                 #content{
                     padding: 25px 30px;
                 }
-                
+
                 paper-material{
                     padding: 25px 25px;
                     margin-top: 25px;
                 }
-                
+
                 .moduleInfoHeader {
                     font-size: 14px;
                     letter-spacing: 1px;
                     font-weight: bold;
-                    color: #000000; 
+                    color: #000000;
                 }
-                
+
                 .collapse-content {
                     padding: 15px;
                     border: 1px solid #dedede;
                 }
-                
+
         </style>
         <div>
             <paper-tabs id="moduleTabs" selected="0" class="bottom self-end">
@@ -64,7 +64,7 @@
                 <paper-tab>EVENTS</paper-tab>
                 <paper-tab>SETTINGS</paper-tab>
             </paper-tabs>
-            <div id="content">               
+            <div id="content">
                 <neon-animated-pages id="modulePages" class="flex" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
                     <neon-animatable>
                         <paper-material elevation="1">
@@ -75,7 +75,7 @@
                         </paper-material>
                     </neon-animatable>
                     <neon-animatable>
-                         
+
                     <template is="dom-repeat" items={{selectedModule.actions}} as="action">
                         <paper-material elevation="1">
                             <h1>{{action.name}}</h1>

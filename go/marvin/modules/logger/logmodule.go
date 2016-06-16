@@ -1,4 +1,4 @@
-package modules
+package logmodule
 
 import (
 	"encoding/json"
@@ -15,10 +15,10 @@ type printMessage struct {
 	Msg string `json:"msg"`
 }
 
-func (pm *LogModule) Setup() {
-	pm.Name = "Logger"
-	pm.Description = "Log a message"
-	pm.Actions = []models.MarvinAction{CreateLogAction()}
+func (lm *LogModule) Setup() {
+	lm.Name = "Logger"
+	lm.Description = "Log a message"
+	lm.Actions = []models.MarvinAction{CreateLogAction()}
 }
 
 type PrintAction struct {

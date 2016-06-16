@@ -31,7 +31,6 @@ func sendJSONResponse(w http.ResponseWriter, status int, data interface{}) {
 	b, err := json.MarshalIndent(data, "", "   ")
 	if err != nil {
 		log.Printf("%v", err.Error())
-		//panic(err)
 	}
 
 	w.Write(b)

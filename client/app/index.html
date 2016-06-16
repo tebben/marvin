@@ -62,12 +62,12 @@
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
           <img class="profile-img" src="https://lh6.googleusercontent.com/-xIQhJnZAkgI/AAAAAAAAAAI/AAAAAAAAAB0/Ji-7qr4V-ME/s96-c/photo.jpg">
-         
+
           <div class="bottom layout vertical">
                  <span class="menu-name">MARVIN - </span>
              <span>Home Automation</span>
           </div>
-         
+
         </paper-toolbar>
 
         <!-- Drawer Content -->
@@ -83,7 +83,7 @@
             </a>
             <paper-menu class="menu-content subMenu" >
                 <template is="dom-repeat" items={{modules}} as="module">
-                  <a data-route="module" href$="module/{{module.name}}">
+                  <a data-route="module" href$="{{baseUrl}}module/{{module.name}}">
                       <iron-icon icon="chevron-right"></iron-icon>
                       <span>{{module.name}}</span>
                   </a>

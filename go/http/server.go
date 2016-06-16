@@ -13,7 +13,7 @@ import (
 type MarvinServer struct {
 	marvin    *models.Marvin
 	host      string                  // Hostname for example "localhost" or "192.168.1.14"
-	port      int                     // Portnumber where you want to run your http server on
+	port      int                     // Port number where you want to run your http server on
 	endpoints []models.MarvinEndpoint // Configured endpoints for Marvin HTTP
 }
 
@@ -31,7 +31,7 @@ func CreateServer(marvin *models.Marvin, host string, port int, endpoints []mode
 func (ms *MarvinServer) Start() {
 	go startWebsockets()
 
-	log.Printf("Started Marvin HTTP Server on %v:%v", ms.host, ms.port)
+	log.Printf("Started Marvin HTTP Server on %v:%v\n", ms.host, ms.port)
 	router := createRouter(ms)
 	httpError := netHTTP.ListenAndServe(ms.host+":"+strconv.Itoa(ms.port), router)
 
